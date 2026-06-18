@@ -21,7 +21,7 @@ app.use(helmet());
 // Configure CORS to support multiple client URLs and credentialed requests
 const allowedOrigins = process.env.CLIENT_URL
   ? process.env.CLIENT_URL.split(',').map(url => url.trim())
-  : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+  : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'https://nurse-dashboard-pearl.vercel.app'];
 
 app.use(
   cors({

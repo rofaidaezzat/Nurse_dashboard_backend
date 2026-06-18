@@ -21,16 +21,28 @@ const seedAdminUser = async () => {
   }
 };
 
+let cachedConnection: typeof mongoose | null = null;
+
 const connectDB = async (): Promise<void> => {
+  if (cachedConnection && mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  const dbUrl = process.env.DATABASE_URL;
+  if (!dbUrl) {
+    throw new Error('DATABASE_URL is not defined in environment variables');
+  }
+
   try {
-    const conn = await mongoose.connect(process.env.DATABASE_URL as string);
+    const conn = await mongoose.connect(dbUrl);
+    cachedConnection = conn;
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     
     // Seed default admin
     await seedAdminUser();
   } catch (error: any) {
     console.error(`❌ MongoDB connection error: ${error.message}`);
-    process.exit(1);
+    throw error;
   }
 };
 

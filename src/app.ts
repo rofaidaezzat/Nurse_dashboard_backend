@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.routes';
 import uploadRoutes from './routes/upload.routes';
 import errorHandler from './middlewares/errorHandler.middleware';
 import notFound from './middlewares/notFound.middleware';
+import connectDB from './config/db';
 
 const app = express();
 
@@ -54,6 +55,12 @@ app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// ─── Database Connection Middleware ──────────────────────────────────────────
+app.use(async (_req, _res, next) => {
+  await connectDB();
+  next();
+});
 
 // ─── API Routes ──────────────────────────────────────────────────────────────
 app.use('/api/v1/auth',   authRoutes);

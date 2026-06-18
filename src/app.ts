@@ -60,6 +60,16 @@ app.use('/api/v1/auth',   authRoutes);
 app.use('/api/v1/staff',  staffRoutes);
 app.use('/api/v1/upload', uploadRoutes);
 
+// ─── Welcome / Root Route ────────────────────────────────────────────────────
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to the Nurse Dashboard API 🚀',
+    healthCheck: '/api/health',
+    version: '1.0.0'
+  });
+});
+
 // ─── Health Check ────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
   res.status(200).json({ status: 'OK', message: 'Nurse Dashboard API is running 🚀' });

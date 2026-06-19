@@ -6,10 +6,13 @@ import cloudinary from '../config/cloudinary';
 // ─── Cloudinary Storage for Staff Documents & Profiles ──────────────────────
 const staffStorage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: 'nurse_dashboard/staff',
-    resource_type: 'auto',
-  } as any,
+  params: async (req: Request, file: Express.Multer.File) => {
+    const isPdf = file.mimetype === 'application/pdf' || file.originalname.toLowerCase().endsWith('.pdf');
+    return {
+      folder: 'nurse_dashboard/staff',
+      resource_type: isPdf ? 'raw' : 'image',
+    };
+  },
 });
 
 // ─── File Filter ─────────────────────────────────────────────────────────────
